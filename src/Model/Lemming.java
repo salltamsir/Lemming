@@ -11,12 +11,13 @@ import State.State;
 
 public class Lemming extends Carre {
 	
-	Game game;
+	private Game game;
 	private State state ;
 	private ArrayList<Observer> observers;
 	private Direction direction;
 	private int changeTime;
 	private int FallTime;
+	private Direction previousDirection;
 	
 	
 	
@@ -27,6 +28,7 @@ public class Lemming extends Carre {
 
 		state=State.NormalState;
 		direction= Direction.Right;
+		previousDirection=Direction.Right;
 	}
 	
 	
@@ -66,8 +68,10 @@ public class Lemming extends Carre {
 	}
 	public void jump(){
 		if(this.getDirection().equals(Direction.Right)){
+	
 			this.getCoordinate().setX(this.getCoordinate().getX()+this.getCoordinate().getLargeur());
 			this.getCoordinate().setY(this.getCoordinate().getY()-this.getCoordinate().getLongueur());
+
 		}
 		else
 			if(this.getDirection().equals(Direction.Left)){
@@ -90,6 +94,8 @@ public class Lemming extends Carre {
 	}
 	
 	public void setDirection(Direction direction){
+		if(direction.equals(Direction.Right) || direction.equals(Direction.Left))
+			previousDirection=direction;
 		this.direction=direction;
 	}
 	
@@ -98,6 +104,7 @@ public class Lemming extends Carre {
 	}
 	public void setState(State state){
 		this.state=state;
+		state.onEnter(this);
 	}
 	
 	public Game getGame(){
@@ -133,6 +140,21 @@ public class Lemming extends Carre {
 	public void setDirectionAndState(Direction direction, State state){
 		this.direction=direction;
 		this.state=state;
+		state.onEnter(this);
+	}
+
+
+
+
+	public Direction getPreviousDirection() {
+		return previousDirection;
+	}
+
+
+
+
+	public void setPreviousDirection(Direction previousDirection) {
+		this.previousDirection = previousDirection;
 	}
 	
 	

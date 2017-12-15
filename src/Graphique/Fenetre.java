@@ -21,6 +21,7 @@ import Model.Event;
 import Model.Game;
 import Model.Lemming;
 import Model.Observer;
+import Model.Obstacle;
 
 
 
@@ -53,6 +54,12 @@ public class Fenetre extends JFrame implements Observer{
 			}
 			
 			g.setColor(Color.BLACK);
+			
+			for (Obstacle o: game.getListeObstacle()){
+				
+
+				g.fillRect(o.getCoordinate().getX(),o.getCoordinate().getY(),o.getCoordinate().getLargeur(),o.getCoordinate().getLongueur());
+			}
 			}
 	};
 	

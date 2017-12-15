@@ -11,11 +11,13 @@ import Model.Event;
 import Model.Game;
 import Model.Lemming;
 import Model.Observer;
+import Model.Obstacle;
+import Model.TypeObstacle;
 import State.State;
 
 public class Test {
 	
-	private static final int SPEED = 200;
+	private static final int SPEED = 500;
 	
 	
 
@@ -28,7 +30,7 @@ public class Test {
 		Escalier e5 = new Escalier(new Coordinate (80,100,20,20) );
 		Escalier e6 = new Escalier(new Coordinate (100,100,20,20) );
 		Escalier e7 = new Escalier(new Coordinate (80,80,20,20) );
-		Escalier e8 = new Escalier(new Coordinate (80,60,20,20) );
+		Escalier e8 = new Escalier(new Coordinate (40,80,20,20) );
 		
 		Fenetre fen = new Fenetre();
 		
@@ -41,19 +43,21 @@ public class Test {
 		game.getListeEscalier().add(e4);
 		game.getListeEscalier().add(e5);
 		game.getListeEscalier().add(e6);
-		game.getListeEscalier().add(e7);
+		//game.getListeEscalier().add(e7);
 		game.getListeEscalier().add(e8);
 		
-		Lemming l = new Lemming (new Coordinate(100,100,20,20), game);
-		//Lemming l0 = new Lemming (new Coordinate(0,15,20,20), game);
+		game.getListeObstacle().add(new Obstacle(new Coordinate(100,80,20,20), TypeObstacle.Simple));
 		
-		Lemming l1 = new Lemming (new Coordinate(20,80,20,20), game);
+		Lemming l = new Lemming (new Coordinate(0,100,20,20), game);
+		Lemming l0 = new Lemming (new Coordinate(0,100,20,20), game);
+		
+		Lemming l1 = new Lemming (new Coordinate (60,80,20,20), game);
 		l1.setDirection(Direction.Right);
 		ArrayList<Lemming> listeLemming = new ArrayList();
 	//	listeLemming.add(l);
-		l1.setState(State.ForreurState);
+		l1.setState(State.TunnelierState);
 		listeLemming.add(l1);
-		//listeLemming.add(l0);
+	//listeLemming.add(l0);
 
 		
 		game.setListeLemming(listeLemming);
