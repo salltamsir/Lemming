@@ -44,20 +44,22 @@ public class Test {
 		game.getListeEscalier().add(e5);
 		game.getListeEscalier().add(e6);
 		//game.getListeEscalier().add(e7);
-		game.getListeEscalier().add(e8);
+		//game.getListeEscalier().add(e8);
 		
 		game.getListeObstacle().add(new Obstacle(new Coordinate(100,80,20,20), TypeObstacle.Simple));
 		
-		Lemming l = new Lemming (new Coordinate(0,100,20,20), game);
-		Lemming l0 = new Lemming (new Coordinate(0,100,20,20), game);
+		Lemming l = new Lemming (new Coordinate(20,80,20,20), game);
+		Lemming l0 = new Lemming (new Coordinate(80,80,20,20), game);
 		
-		Lemming l1 = new Lemming (new Coordinate (60,80,20,20), game);
+		Lemming l1 = new Lemming (new Coordinate (20,80,20,20), game);
 		l1.setDirection(Direction.Right);
 		ArrayList<Lemming> listeLemming = new ArrayList();
 	//	listeLemming.add(l);
-		l1.setState(State.TunnelierState);
+		//l0.setState(State.ParachutisteState);
+		l1.setState(State.BombeurState);
 		listeLemming.add(l1);
-	//listeLemming.add(l0);
+		
+	listeLemming.add(l0);
 
 		
 		game.setListeLemming(listeLemming);

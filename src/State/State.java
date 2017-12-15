@@ -155,9 +155,7 @@ public enum State {
 		@Override
 		public void move(Lemming l) {
 			// TODO Auto-generated method stub
-			if(l.getChangeTime()==3){
-				
-			}
+
 			NormalState.move(l);
 			l.setChangeTime(l.getChangeTime()+1);
 			
@@ -255,7 +253,8 @@ public enum State {
 		public
 		void move(Lemming l) {
 			// TODO Auto-generated method stub
-
+			
+		
 			 
 			if(l.getDirection().equals(Direction.Down)) {
 				if(! l.getGame().isEmpty(l.getCoordinate())){

@@ -112,7 +112,6 @@ public class Game implements Observer{
 		for (Obstacle o : listeObstacle){
 			
 			if(o.getCoordinate().getX()==coordinate.getX()+coordinate.getLargeur() && o.getCoordinate().getY()==coordinate.getY() ){
-				System.out.println(o.getCoordinate().getX()+" et "+coordinate.getX()+" y "+o.getCoordinate().getY()+" et "+coordinate.getY());
 				if(o.getType().equals(TypeObstacle.Simple)){
 					listeObstacle.remove(o);
 					break;
@@ -221,13 +220,14 @@ public class Game implements Observer{
 					obs.add(o);
 				}
 		}
+	
 		return obs;
 		
 	}
 	
 	public void removeNeighborObstacles(ArrayList<Obstacle> obs){
 		for (Obstacle o: obs){
-			listeObstacle.remove(obs);
+			listeObstacle.remove(o);
 		}
 	}
 
