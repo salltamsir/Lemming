@@ -2,6 +2,9 @@ package Model;
 
 public enum TypeObstacle {
 	
-	Simple;
+	Simple,
+	SimpleDestructeur,
+	Lave,
+	Indestructible;
 
 }

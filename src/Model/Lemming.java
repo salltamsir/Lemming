@@ -13,6 +13,7 @@ public class Lemming extends Carre {
 	
 	private Game game;
 	private State state ;
+	private State previousState;
 	private ArrayList<Observer> observers;
 	private Direction direction;
 	private int changeTime;
@@ -25,9 +26,9 @@ public class Lemming extends Carre {
 		super(coordinate);
 		this.game= game;
 		observers=new ArrayList();
-
-		state=State.NormalState;
-		direction= Direction.Right;
+		state=State.ParachutisteState;
+		previousState=state;
+		direction= Direction.Down;
 		previousDirection=Direction.Right;
 	}
 	
@@ -67,20 +68,20 @@ public class Lemming extends Carre {
 		this.getCoordinate().setY(this.getCoordinate().getY()+y);
 	}
 	public void jump(){
-		if(this.getDirection().equals(Direction.Right)){
 	
-			this.getCoordinate().setX(this.getCoordinate().getX()+this.getCoordinate().getLargeur());
+	
+			this.getCoordinate().setX(this.getCoordinate().getX()+this.getDirection().getX());
 			this.getCoordinate().setY(this.getCoordinate().getY()-this.getCoordinate().getLongueur());
 
-		}
-		else
-			if(this.getDirection().equals(Direction.Left)){
-				this.getCoordinate().setX(this.getCoordinate().getX()-this.getCoordinate().getLargeur());
-				this.getCoordinate().setY(this.getCoordinate().getY()-this.getCoordinate().getLongueur());
-				
-			}
 	}
 	
+	public boolean isOut(){
+		return (this.game.isOut(this.coordinate) && !direction.equals(Direction.Down));
+	}
+	
+	public boolean isChangeable(State state){
+		return this.game.isChangeable(this, state);
+	}
 	
 	
 	
@@ -103,8 +104,11 @@ public class Lemming extends Carre {
 		return state;
 	}
 	public void setState(State state){
-		this.state=state;
-		state.onEnter(this);
+		if(isChangeable(state)){
+			previousState=this.state;
+			this.state=state;
+			state.onEnter(this);
+		}
 	}
 	
 	public Game getGame(){
@@ -138,24 +142,27 @@ public class Lemming extends Carre {
 	}
 	
 	public void setDirectionAndState(Direction direction, State state){
-		this.direction=direction;
-		this.state=state;
+		setDirection(direction);
+		setState(state);
 		state.onEnter(this);
 	}
 
+	
 
 
 
 	public Direction getPreviousDirection() {
 		return previousDirection;
 	}
-
-
-
-
-	public void setPreviousDirection(Direction previousDirection) {
-		this.previousDirection = previousDirection;
+	public State getPreviousState(){
+		return previousState;
 	}
+
+
+
+	
+
+
 	
 	
 	

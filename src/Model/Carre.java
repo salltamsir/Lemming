@@ -2,8 +2,8 @@ package Model;
 
 public abstract class Carre  {
 	
-	private Coordinate coordinate;
-	private boolean isDeleted;
+	protected Coordinate coordinate;
+	protected boolean isDeleted;
 	
 	Carre(Coordinate coordinate){
 		this.coordinate=coordinate;

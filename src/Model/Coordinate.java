@@ -7,8 +7,7 @@ public class Coordinate {
 	private int largeur;
 	private int longueur;
 	
-	public Coordinate(int x, int y, int largeur, int longueur) {
-		super();
+	public Coordinate(int x, int y, int largeur, int longueur)  {
 		this.x = x;
 		this.y = y;
 		this.largeur = largeur;
@@ -22,6 +21,12 @@ public class Coordinate {
 		this.y = y;
 	}
 
+	public boolean contains(int x, int y){
+		if(x>=this.x && x<=this.x+this.largeur && y>=this.y && y<this.y+this.longueur)
+			return true;
+		return false;
+	}
+	
 	public int getX() {
 		return x;
 	}

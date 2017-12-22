@@ -3,10 +3,14 @@ package Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import Graphique.Fenetre;
 import Model.Coordinate;
+import Model.CoordinateException;
 import Model.Direction;
-import Model.Escalier;
+
+import Model.Obstacle;
 import Model.Event;
 import Model.Game;
 import Model.Lemming;
@@ -18,72 +22,55 @@ import State.State;
 public class Test {
 	
 	private static final int SPEED = 500;
+	private static final int LONGUEUR=20;
+	private static int  LARGEUR=20;
+	
+	public static void makeCircuit(Game game, int x, int y, int nb){
+		for(int i=0;i<nb;++i ){
+			game.getListeObstacle().add(new Obstacle(new Coordinate(x,y,LARGEUR,LONGUEUR)));
+			x+=20;
+		}
+	}
 	
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 	    ArrayList<Lemming> deletedLemmings = new ArrayList();
-		Escalier e = new Escalier(new Coordinate (0,100,20,20) );
-		Escalier e1 = new Escalier(new Coordinate (20,100,20,20) );
-		Escalier e3 = new Escalier(new Coordinate (40,100,20,20) );
-		Escalier e4 = new Escalier(new Coordinate (60,100,20,20) );
-		Escalier e5 = new Escalier(new Coordinate (80,100,20,20) );
-		Escalier e6 = new Escalier(new Coordinate (100,100,20,20) );
-		Escalier e7 = new Escalier(new Coordinate (80,80,20,20) );
-		Escalier e8 = new Escalier(new Coordinate (40,80,20,20) );
-		
-		Fenetre fen = new Fenetre();
-		
-		Game game = new Game(fen);
-		
-		game.getListeEscalier().add(e);
-		game.getListeEscalier().add(e1);
-		game.getListeEscalier().add(e3);
-		game.getListeEscalier().add(e4);
-		game.getListeEscalier().add(e4);
-		game.getListeEscalier().add(e5);
-		game.getListeEscalier().add(e6);
-		//game.getListeEscalier().add(e7);
-		//game.getListeEscalier().add(e8);
-		
-		game.getListeObstacle().add(new Obstacle(new Coordinate(100,80,20,20), TypeObstacle.Simple));
-		
-		Lemming l = new Lemming (new Coordinate(20,80,20,20), game);
-		Lemming l0 = new Lemming (new Coordinate(80,80,20,20), game);
-		
-		Lemming l1 = new Lemming (new Coordinate (20,80,20,20), game);
-		l1.setDirection(Direction.Right);
-		ArrayList<Lemming> listeLemming = new ArrayList();
-	//	listeLemming.add(l);
-		//l0.setState(State.ParachutisteState);
-		l1.setState(State.BombeurState);
-		listeLemming.add(l1);
-		
-	listeLemming.add(l0);
+	    ArrayList<Coordinate> coordinateObstacle= new ArrayList();
+		 
 
+	   
+		Game game = new Game();
+		Fenetre fen = new Fenetre(game.getWidth(),game.getHeight());
+		makeCircuit(game,60,200,20);makeCircuit(game,120,220,13);makeCircuit(game,140,240,11);
+		makeCircuit(game,140,260,11);makeCircuit(game,140,280,11);makeCircuit(game,600,340,12);
+		makeCircuit(game,740,320,1);makeCircuit(game,740,300,1);
+		makeCircuit(game,820,320,1);makeCircuit(game,820,300,1);
+		makeCircuit(game,200,300,1);
 		
-		game.setListeLemming(listeLemming);
-
-
-		
-		
+		Obstacle o = new Obstacle(game.getLaveCoordinat(),TypeObstacle.Lave);
+		game.getListeObstacle().add(o);
 		
 		fen.addGame(game);
-		//game.setFenetre(fen);
-
-
+		
 	
+		Lemming l = new Lemming (new Coordinate(60,0,LONGUEUR,LARGEUR), game);
+		Lemming l0 = new Lemming (new Coordinate(60,-60,LONGUEUR,LARGEUR), game);
+		Lemming l1 = new Lemming (new Coordinate (60,-140,LONGUEUR,LARGEUR), game);
+		Lemming l2 = new Lemming (new Coordinate (60,-180,LONGUEUR,LARGEUR), game);
+		Lemming l3 = new Lemming (new Coordinate (60,-240,LONGUEUR,LARGEUR), game);
+		ArrayList<Lemming> listeLemming = new ArrayList();
+		listeLemming.add(l0);
+		listeLemming.add(l);
+		listeLemming.add(l1);
+		listeLemming.add(l2);
+		listeLemming.add(l3);
+		game.setListeLemming(listeLemming);
+		
+		
 
 		for (Lemming lem : game.getListeLemming()){
-		/*	lem.register(new Observer() {
-				
-				@Override
-				public void notify(List<Event> events, Lemming lem) {
-					System.out.println(events);
-					
-				}
-			}); */
-			
+
 			lem.register(fen);
 			lem.register(game);
 			
@@ -95,26 +82,33 @@ public class Test {
 			ex.printStackTrace();
 		}
 
-		while(true){
+		while(game.isAlive()){
 		
 			game.getDeletedLemmings(deletedLemmings);
 			game.deleteLemmings(deletedLemmings);
 			
 			for(Lemming lemming : game.getListeLemming()){
 				
-				lemming.getState().move(lemming);
+
+					lemming.getState().move(lemming);
 			
-				try{
-					Thread.sleep(SPEED);
-				}
-				catch (InterruptedException ex){
+					try{
+						Thread.sleep(SPEED/game.getListeLemming().size());
+					}
+					catch (InterruptedException ex){
 					ex.printStackTrace();
-				}
+					}
+			
 				
 			}
 
 		
 		}
+		JOptionPane jop1 = new JOptionPane();
+		if(game.win())
+			jop1.showMessageDialog(null, "Vous avez gagne : "+game.getSaved()+" sauves", "Termine", JOptionPane.INFORMATION_MESSAGE);
+		else
+			jop1.showMessageDialog(null, "Vous avez perdu", "Termine", JOptionPane.ERROR_MESSAGE);
 		
 
 
